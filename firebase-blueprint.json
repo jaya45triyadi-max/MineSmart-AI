@@ -1,0 +1,714 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MINE SMART AI - Enterprise Coal Mining Firestore Blueprint",
+  "description": "Multi-tenant, multi-site database blueprint for coal mining operations",
+  "entities": {
+    "Company": {
+      "title": "Company",
+      "description": "Mining owner or contractor tenant",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "code": { "type": "string" },
+        "legalName": { "type": "string" },
+        "displayName": { "type": "string" },
+        "shortName": { "type": "string" },
+        "npwpMasked": { "type": "string" },
+        "businessType": { "type": "string" },
+        "timezone": { "type": "string" },
+        "currency": { "type": "string" },
+        "language": { "type": "string" },
+        "subscriptionPlan": { "type": "string", "enum": ["STARTER", "PROFESSIONAL", "ENTERPRISE", "ENTERPRISE_DEDICATED"] },
+        "licenseId": { "type": "string" },
+        "licenseKey": { "type": "string" },
+        "status": { "type": "string", "enum": ["ACTIVE", "TRIAL", "EXPIRED", "SUSPENDED"] },
+        "isDeleted": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "createdBy": { "type": "string" },
+        "updatedBy": { "type": "string" }
+      },
+      "required": ["id", "code", "displayName", "licenseKey", "subscriptionPlan", "status"]
+    },
+    "Site": {
+      "title": "Site",
+      "description": "Mining site location under a company",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "code": { "type": "string" },
+        "name": { "type": "string" },
+        "miningType": { "type": "string" },
+        "province": { "type": "string" },
+        "timezone": { "type": "string" },
+        "operationalStatus": { "type": "string", "enum": ["ACTIVE", "MAINTENANCE", "SUSPENDED", "CLOSED"] },
+        "targetCoalMonthlyMT": { "type": "number" },
+        "targetOBMonthlyBCM": { "type": "number" },
+        "isDeleted": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "companyId", "code", "name"]
+    },
+    "Department": {
+      "title": "Department",
+      "description": "Organizational department hierarchy",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "code": { "type": "string" },
+        "name": { "type": "string" },
+        "parentDepartmentId": { "type": "string" },
+        "managerUserId": { "type": "string" },
+        "status": { "type": "string" },
+        "isDeleted": { "type": "boolean" }
+      },
+      "required": ["id", "companyId", "code", "name"]
+    },
+    "User": {
+      "title": "User",
+      "description": "Enterprise user account profile",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "uid": { "type": "string" },
+        "authUid": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteIds": { "type": "array", "items": { "type": "string" } },
+        "activeSiteId": { "type": "string" },
+        "role": { "type": "string" },
+        "department": { "type": "string" },
+        "displayName": { "type": "string" },
+        "fullName": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "isActive": { "type": "boolean" },
+        "isDeleted": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "companyId", "email", "role"]
+    },
+    "Role": {
+      "title": "Role",
+      "description": "Custom or system RBAC role",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "permissions": { "type": "array", "items": { "type": "string" } },
+        "isSystemRole": { "type": "boolean" },
+        "status": { "type": "string" },
+        "isDeleted": { "type": "boolean" }
+      },
+      "required": ["id", "companyId", "name", "permissions"]
+    },
+    "Equipment": {
+      "title": "Equipment",
+      "description": "Heavy equipment master asset database",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "unitNumber": { "type": "string" },
+        "code": { "type": "string" },
+        "category": { "type": "string" },
+        "brandModel": { "type": "string" },
+        "status": { "type": "string" },
+        "locationPit": { "type": "string" },
+        "workingHoursSMU": { "type": "number" },
+        "fuelLevelPercent": { "type": "number" },
+        "physicalAvailability": { "type": "number" },
+        "useOfAvailability": { "type": "number" },
+        "isDeleted": { "type": "boolean" }
+      },
+      "required": ["id", "companyId", "siteId", "code", "category", "status"]
+    },
+    "FleetStatus": {
+      "title": "FleetStatus",
+      "description": "Real-time location & fleet status operational telemetry",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "equipmentId": { "type": "string" },
+        "status": { "type": "string" },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "speed": { "type": "number" },
+        "engineHour": { "type": "number" },
+        "fuelLevel": { "type": "number" },
+        "lastTelemetryAt": { "type": "string" }
+      },
+      "required": ["id", "companyId", "siteId", "equipmentId"]
+    },
+    "EquipmentTelemetry": {
+      "title": "EquipmentTelemetry",
+      "description": "High-frequency IoT telemetry log stream",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "equipmentId": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "engineTemperature": { "type": "number" },
+        "oilPressure": { "type": "number" },
+        "payload": { "type": "number" }
+      },
+      "required": ["id", "companyId", "siteId", "equipmentId", "timestamp"]
+    },
+    "ProductionRecord": {
+      "title": "ProductionRecord",
+      "description": "Daily coal production and overburden volume logs",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "date": { "type": "string" },
+        "shift": { "type": "string" },
+        "pit": { "type": "string" },
+        "seam": { "type": "string" },
+        "materialType": { "type": "string" },
+        "coalMT": { "type": "number" },
+        "obBCM": { "type": "number" },
+        "stripRatio": { "type": "number" },
+        "status": { "type": "string" },
+        "isDeleted": { "type": "boolean" }
+      },
+      "required": ["id", "companyId", "siteId", "date", "shift", "coalMT", "obBCM"]
+    },
+    "ProductionTarget": {
+      "title": "ProductionTarget",
+      "description": "Production targets for site planning",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "periodType": { "type": "string" },
+        "coalTarget": { "type": "number" },
+        "obTarget": { "type": "number" },
+        "startDate": { "type": "string" },
+        "endDate": { "type": "string" }
+      },
+      "required": ["id", "companyId", "siteId", "periodType", "coalTarget", "obTarget"]
+    },
+    "MinePlan": {
+      "title": "MinePlan",
+      "description": "Mine short term / long term plans",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "planName": { "type": "string" },
+        "version": { "type": "string" },
+        "period": { "type": "string" },
+        "targetCoalMT": { "type": "number" },
+        "targetOBBCM": { "type": "number" },
+        "approvalStatus": { "type": "string" }
+      },
+      "required": ["id", "companyId", "siteId", "planName", "version"]
+    },
+    "Borehole": {
+      "title": "Borehole",
+      "description": "Geology borehole drilling samples",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "boreholeCode": { "type": "string" },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "totalDepth": { "type": "number" },
+        "seamCode": { "type": "string" }
+      },
+      "required": ["id", "companyId", "siteId", "boreholeCode"]
+    },
+    "SurveyProject": {
+      "title": "SurveyProject",
+      "description": "Survey topographical & drone volume measurement",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "surveyCode": { "type": "string" },
+        "surveyDate": { "type": "string" },
+        "volumeOBBCM": { "type": "number" },
+        "volumeCoalMT": { "type": "number" }
+      },
+      "required": ["id", "companyId", "siteId", "surveyCode"]
+    },
+    "DispatchCycle": {
+      "title": "DispatchCycle",
+      "description": "FMS truck-excavator loading cycle times",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "truckId": { "type": "string" },
+        "excavatorId": { "type": "string" },
+        "cycleTimeMinutes": { "type": "number" },
+        "payloadTon": { "type": "number" }
+      },
+      "required": ["id", "companyId", "siteId", "truckId", "excavatorId"]
+    },
+    "HaulingRecord": {
+      "title": "HaulingRecord",
+      "description": "Haulage trip counts and fuel consumption",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "truckId": { "type": "string" },
+        "routeCode": { "type": "string" },
+        "tripCount": { "type": "number" }
+      },
+      "required": ["id", "companyId", "siteId", "truckId"]
+    },
+    "FuelTank": {
+      "title": "FuelTank",
+      "description": "Site fuel storage tank level tracking",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "tankCode": { "type": "string" },
+        "capacityLiters": { "type": "number" },
+        "currentLevelLiters": { "type": "number" }
+      },
+      "required": ["id", "companyId", "siteId", "tankCode"]
+    },
+    "FuelTransaction": {
+      "title": "FuelTransaction",
+      "description": "Fuel dispensing & transfer transaction log",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "equipmentCode": { "type": "string" },
+        "fuelTankCode": { "type": "string" },
+        "litersIssued": { "type": "number" },
+        "transactionType": { "type": "string" }
+      },
+      "required": ["id", "companyId", "siteId", "equipmentCode", "litersIssued"]
+    },
+    "MaintenanceWorkOrder": {
+      "title": "MaintenanceWorkOrder",
+      "description": "Equipment breakdown & preventive work orders",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "woCode": { "type": "string" },
+        "equipmentId": { "type": "string" },
+        "type": { "type": "string" },
+        "priority": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["id", "companyId", "siteId", "woCode", "equipmentId"]
+    },
+    "Stockpile": {
+      "title": "Stockpile",
+      "description": "ROM and clean coal stockpile inventory",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "code": { "type": "string" },
+        "materialType": { "type": "string" },
+        "currentTonnage": { "type": "number" }
+      },
+      "required": ["id", "companyId", "siteId", "code", "currentTonnage"]
+    },
+    "LabSample": {
+      "title": "LabSample",
+      "description": "Coal quality laboratory assay sampling results",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "sampleCode": { "type": "string" },
+        "calorificGAR": { "type": "number" },
+        "totalMoisture": { "type": "number" },
+        "ashContent": { "type": "number" },
+        "totalSulfur": { "type": "number" }
+      },
+      "required": ["id", "companyId", "siteId", "sampleCode"]
+    },
+    "Shipment": {
+      "title": "Shipment",
+      "description": "Coal barge and vessel sales shipments",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "shipmentNumber": { "type": "string" },
+        "customerName": { "type": "string" },
+        "targetQuantityMT": { "type": "number" },
+        "actualQuantityMT": { "type": "number" }
+      },
+      "required": ["id", "companyId", "siteId", "shipmentNumber"]
+    },
+    "HSEIncident": {
+      "title": "HSEIncident",
+      "description": "Health, Safety, and Environment incident & near miss logs",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "type": { "type": "string" },
+        "severity": { "type": "string" },
+        "location": { "type": "string" },
+        "description": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["id", "companyId", "siteId", "type", "severity", "description"]
+    },
+    "EnvironmentRecord": {
+      "title": "EnvironmentRecord",
+      "description": "Water pH, air quality, dust and noise monitoring",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "monitoringPoint": { "type": "string" },
+        "parameter": { "type": "string" },
+        "measuredValue": { "type": "number" },
+        "isCompliant": { "type": "boolean" }
+      },
+      "required": ["id", "companyId", "siteId", "monitoringPoint", "parameter"]
+    },
+    "Employee": {
+      "title": "Employee",
+      "description": "Human resource personnel database",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "employeeNumber": { "type": "string" },
+        "fullName": { "type": "string" },
+        "position": { "type": "string" },
+        "departmentName": { "type": "string" }
+      },
+      "required": ["id", "companyId", "employeeNumber", "fullName"]
+    },
+    "AttendanceRecord": {
+      "title": "AttendanceRecord",
+      "description": "Employee shift clock in / clock out logs",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "employeeId": { "type": "string" },
+        "date": { "type": "string" },
+        "attendanceStatus": { "type": "string" }
+      },
+      "required": ["id", "companyId", "siteId", "employeeId", "date"]
+    },
+    "PurchaseOrder": {
+      "title": "PurchaseOrder",
+      "description": "Procurement purchase order transactions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "poNumber": { "type": "string" },
+        "vendorName": { "type": "string" },
+        "totalAmountIDR": { "type": "number" },
+        "approvalStatus": { "type": "string" }
+      },
+      "required": ["id", "companyId", "poNumber", "vendorName"]
+    },
+    "InventoryTransaction": {
+      "title": "InventoryTransaction",
+      "description": "Warehouse inventory goods receipt & issue",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "itemCode": { "type": "string" },
+        "itemName": { "type": "string" },
+        "transactionType": { "type": "string" },
+        "quantity": { "type": "number" }
+      },
+      "required": ["id", "companyId", "itemCode", "quantity"]
+    },
+    "FinancialTransaction": {
+      "title": "FinancialTransaction",
+      "description": "Mine operating expenditure & revenue journal entries",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "transactionCode": { "type": "string" },
+        "accountCategory": { "type": "string" },
+        "amountIDR": { "type": "number" }
+      },
+      "required": ["id", "companyId", "transactionCode", "amountIDR"]
+    },
+    "DocumentMetadata": {
+      "title": "DocumentMetadata",
+      "description": "Document management system file metadata",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "storagePath": { "type": "string" }
+      },
+      "required": ["id", "companyId", "title", "storagePath"]
+    },
+    "AIConversation": {
+      "title": "AIConversation",
+      "description": "Mining AI copilot conversation thread",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" }
+      },
+      "required": ["id", "companyId", "userId"]
+    },
+    "NotificationRecord": {
+      "title": "NotificationRecord",
+      "description": "In-app notifications for users",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "recipientUserId": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "isRead": { "type": "boolean" }
+      },
+      "required": ["id", "companyId", "recipientUserId", "title"]
+    },
+    "License": {
+      "title": "License",
+      "description": "SaaS license key subscription details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "licenseKey": { "type": "string" },
+        "companyId": { "type": "string" },
+        "plan": { "type": "string" },
+        "status": { "type": "string" },
+        "deviceLimit": { "type": "number" },
+        "userLimit": { "type": "number" }
+      },
+      "required": ["licenseKey", "companyId", "plan", "status"]
+    },
+    "Subscription": {
+      "title": "Subscription",
+      "description": "Billing and payment subscription plan details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "licenseId": { "type": "string" },
+        "plan": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["id", "companyId", "plan", "status"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "System operational audit trail record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "userId": { "type": "string" },
+        "action": { "type": "string" },
+        "module": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "companyId", "userId", "action", "module", "timestamp"]
+    },
+    "DailySummary": {
+      "title": "DailySummary",
+      "description": "Aggregated daily KPI summary documents",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyId": { "type": "string" },
+        "siteId": { "type": "string" },
+        "date": { "type": "string" },
+        "totalCoalMT": { "type": "number" },
+        "totalOBBCM": { "type": "number" }
+      },
+      "required": ["id", "companyId", "siteId", "date"]
+    }
+  },
+  "firestore": {
+    "/companies/{companyId}": {
+      "schema": { "$ref": "#/entities/Company" },
+      "description": "Company tenants"
+    },
+    "/sites/{siteId}": {
+      "schema": { "$ref": "#/entities/Site" },
+      "description": "Mining site locations"
+    },
+    "/departments/{departmentId}": {
+      "schema": { "$ref": "#/entities/Department" },
+      "description": "Organizational departments"
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User account profiles"
+    },
+    "/roles/{roleId}": {
+      "schema": { "$ref": "#/entities/Role" },
+      "description": "RBAC Roles"
+    },
+    "/equipment/{equipmentId}": {
+      "schema": { "$ref": "#/entities/Equipment" },
+      "description": "Fleet equipment asset database"
+    },
+    "/fleet_status/{statusId}": {
+      "schema": { "$ref": "#/entities/FleetStatus" },
+      "description": "Realtime telemetry and location"
+    },
+    "/equipment_telemetry/{telemetryId}": {
+      "schema": { "$ref": "#/entities/EquipmentTelemetry" },
+      "description": "High-frequency telemetry stream"
+    },
+    "/production_records/{recordId}": {
+      "schema": { "$ref": "#/entities/ProductionRecord" },
+      "description": "Coal & OB daily production logs"
+    },
+    "/production_targets/{targetId}": {
+      "schema": { "$ref": "#/entities/ProductionTarget" },
+      "description": "Production targets"
+    },
+    "/mine_plans/{planId}": {
+      "schema": { "$ref": "#/entities/MinePlan" },
+      "description": "Mine short/long term plans"
+    },
+    "/boreholes/{boreholeId}": {
+      "schema": { "$ref": "#/entities/Borehole" },
+      "description": "Geological borehole drill samples"
+    },
+    "/survey_projects/{projectId}": {
+      "schema": { "$ref": "#/entities/SurveyProject" },
+      "description": "Topographical and volume surveys"
+    },
+    "/dispatch_cycles/{cycleId}": {
+      "schema": { "$ref": "#/entities/DispatchCycle" },
+      "description": "Dispatch FMS loading and haul cycles"
+    },
+    "/hauling_records/{recordId}": {
+      "schema": { "$ref": "#/entities/HaulingRecord" },
+      "description": "Haulage trip counts"
+    },
+    "/fuel_tanks/{tankId}": {
+      "schema": { "$ref": "#/entities/FuelTank" },
+      "description": "Fuel storage tanks"
+    },
+    "/fuel_transactions/{transactionId}": {
+      "schema": { "$ref": "#/entities/FuelTransaction" },
+      "description": "Fuel dispensing logs"
+    },
+    "/maintenance_work_orders/{woId}": {
+      "schema": { "$ref": "#/entities/MaintenanceWorkOrder" },
+      "description": "Equipment breakdown work orders"
+    },
+    "/stockpiles/{stockpileId}": {
+      "schema": { "$ref": "#/entities/Stockpile" },
+      "description": "ROM and clean coal stockpiles"
+    },
+    "/lab_samples/{sampleId}": {
+      "schema": { "$ref": "#/entities/LabSample" },
+      "description": "Coal quality assay results"
+    },
+    "/shipments/{shipmentId}": {
+      "schema": { "$ref": "#/entities/Shipment" },
+      "description": "Barge and vessel sales shipments"
+    },
+    "/hse_incidents/{incidentId}": {
+      "schema": { "$ref": "#/entities/HSEIncident" },
+      "description": "Safety incidents and near-misses"
+    },
+    "/environment_records/{recordId}": {
+      "schema": { "$ref": "#/entities/EnvironmentRecord" },
+      "description": "Environmental monitoring logs"
+    },
+    "/employees/{employeeId}": {
+      "schema": { "$ref": "#/entities/Employee" },
+      "description": "Personnel records"
+    },
+    "/attendance_records/{attendanceId}": {
+      "schema": { "$ref": "#/entities/AttendanceRecord" },
+      "description": "Shift clock in and out logs"
+    },
+    "/purchase_orders/{poId}": {
+      "schema": { "$ref": "#/entities/PurchaseOrder" },
+      "description": "Procurement orders"
+    },
+    "/inventory_transactions/{txId}": {
+      "schema": { "$ref": "#/entities/InventoryTransaction" },
+      "description": "Warehouse stock transactions"
+    },
+    "/financial_transactions/{txId}": {
+      "schema": { "$ref": "#/entities/FinancialTransaction" },
+      "description": "Operating expense & revenue transactions"
+    },
+    "/documents/{documentId}": {
+      "schema": { "$ref": "#/entities/DocumentMetadata" },
+      "description": "Document management storage metadata"
+    },
+    "/ai_conversations/{conversationId}": {
+      "schema": { "$ref": "#/entities/AIConversation" },
+      "description": "AI Copilot threads"
+    },
+    "/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/NotificationRecord" },
+      "description": "User notifications"
+    },
+    "/licenses/{licenseKey}": {
+      "schema": { "$ref": "#/entities/License" },
+      "description": "Commercial platform licenses"
+    },
+    "/subscriptions/{subscriptionId}": {
+      "schema": { "$ref": "#/entities/Subscription" },
+      "description": "Billing subscriptions"
+    },
+    "/audit_logs/{logId}": {
+      "schema": { "$ref": "#/entities/AuditLog" },
+      "description": "Enterprise audit trail logs"
+    },
+    "/daily_summaries/{summaryId}": {
+      "schema": { "$ref": "#/entities/DailySummary" },
+      "description": "Aggregated daily KPI summaries"
+    }
+  }
+}

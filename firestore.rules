@@ -1,0 +1,248 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Default deny all access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions for security validation
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isMemberOfCompany(companyId) {
+      return isSignedIn() && (
+        getUserData().companyId == companyId ||
+        getUserData().role == 'SUPER_ADMIN'
+      );
+    }
+
+    function hasCompanyAccess(resourceData) {
+      return isSignedIn() && (
+        resourceData.companyId == getUserData().companyId ||
+        getUserData().role == 'SUPER_ADMIN'
+      );
+    }
+
+    function isWriteAuthorized(companyId) {
+      return isSignedIn() && isMemberOfCompany(companyId) && (
+        getUserData().role != 'VIEWER'
+      );
+    }
+
+    function isSuperAdminOrOwner() {
+      return isSignedIn() && (
+        getUserData().role == 'SUPER_ADMIN' ||
+        getUserData().role == 'MINING_OWNER'
+      );
+    }
+
+    // USERS Collection
+    match /users/{userId} {
+      allow get: if isSignedIn() && (request.auth.uid == userId || isSuperAdminOrOwner());
+      allow list: if isSignedIn();
+      allow create, update: if isSignedIn() && (request.auth.uid == userId || isSuperAdminOrOwner());
+      allow delete: if isSignedIn() && getUserData().role == 'SUPER_ADMIN';
+    }
+
+    // COMPANIES Collection
+    match /companies/{companyId} {
+      allow read: if isSignedIn() && isMemberOfCompany(companyId);
+      allow write: if isSignedIn() && isSuperAdminOrOwner();
+    }
+
+    // SITES Collection
+    match /sites/{siteId} {
+      allow read: if isSignedIn() && hasCompanyAccess(resource.data);
+      allow write: if isSignedIn() && (isSuperAdminOrOwner() || getUserData().role == 'SITE_MANAGER');
+    }
+
+    // DEPARTMENTS Collection
+    match /departments/{departmentId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && isSuperAdminOrOwner();
+    }
+
+    // ROLES Collection
+    match /roles/{roleId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && isSuperAdminOrOwner();
+    }
+
+    // LICENSES Collection
+    match /licenses/{licenseKey} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && getUserData().role == 'SUPER_ADMIN';
+    }
+
+    // SUBSCRIPTIONS Collection
+    match /subscriptions/{subId} {
+      allow read: if isSignedIn() && hasCompanyAccess(resource.data);
+      allow write: if isSignedIn() && isSuperAdminOrOwner();
+    }
+
+    // EQUIPMENT & FLEET Collections
+    match /equipment/{equipmentId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(equipmentId);
+      allow delete: if isSignedIn() && isSuperAdminOrOwner();
+    }
+
+    match /fleet_status/{statusId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+
+    match /equipment_telemetry/{telemetryId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+    }
+
+    // PRODUCTION Collections
+    match /production_records/{recordId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(recordId);
+      allow delete: if isSignedIn() && (isSuperAdminOrOwner() || getUserData().role == 'SITE_MANAGER');
+    }
+
+    match /production_targets/{targetId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && (isSuperAdminOrOwner() || getUserData().role == 'SITE_MANAGER' || getUserData().role == 'MINE_ENGINEER');
+    }
+
+    // MINE PLANNING & GEOLOGY & SURVEY
+    match /mine_plans/{planId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && (isSuperAdminOrOwner() || getUserData().role == 'MINE_ENGINEER' || getUserData().role == 'SITE_MANAGER');
+    }
+
+    match /boreholes/{boreholeId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && (isSuperAdminOrOwner() || getUserData().role == 'GEOLOGIST');
+    }
+
+    match /survey_projects/{projectId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && (isSuperAdminOrOwner() || getUserData().role == 'SURVEYOR');
+    }
+
+    // DISPATCH & HAULING
+    match /dispatch_cycles/{cycleId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && (isSuperAdminOrOwner() || getUserData().role == 'DISPATCH_OPERATOR' || getUserData().role == 'SITE_MANAGER');
+    }
+
+    match /hauling_records/{recordId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+
+    // FUEL & MAINTENANCE
+    match /fuel_tanks/{tankId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && isWriteAuthorized(resource.data.companyId);
+    }
+
+    match /fuel_transactions/{transactionId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn();
+    }
+
+    match /maintenance_work_orders/{woId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && (isSuperAdminOrOwner() || getUserData().role == 'MAINTENANCE_SUPERVISOR' || getUserData().role == 'SITE_MANAGER');
+    }
+
+    // STOCKPILE & LAB & SHIPMENT
+    match /stockpiles/{stockpileId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+
+    match /lab_samples/{sampleId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+
+    match /shipments/{shipmentId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && (isSuperAdminOrOwner() || getUserData().role == 'SITE_MANAGER');
+    }
+
+    // HSE & ENVIRONMENT
+    match /hse_incidents/{incidentId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn();
+      allow delete: if isSignedIn() && (isSuperAdminOrOwner() || getUserData().role == 'HSE_OFFICER');
+    }
+
+    match /environment_records/{recordId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && (isSuperAdminOrOwner() || getUserData().role == 'HSE_OFFICER');
+    }
+
+    // HR & ATTENDANCE
+    match /employees/{employeeId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && isSuperAdminOrOwner();
+    }
+
+    match /attendance_records/{attendanceId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+
+    // PROCUREMENT & WAREHOUSE & FINANCE
+    match /purchase_orders/{poId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && (isSuperAdminOrOwner() || getUserData().role == 'FINANCE_MANAGER' || getUserData().role == 'SITE_MANAGER');
+    }
+
+    match /inventory_transactions/{txId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+
+    match /financial_transactions/{txId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && (isSuperAdminOrOwner() || getUserData().role == 'FINANCE_MANAGER');
+    }
+
+    // DOCUMENTS & NOTIFICATIONS & AI
+    match /documents/{documentId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+
+    match /ai_conversations/{conversationId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /notifications/{notificationId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // AUDIT LOGS
+    match /audit_logs/{logId} {
+      allow read: if isSignedIn() && isSuperAdminOrOwner();
+      allow create: if isSignedIn();
+    }
+
+    // DAILY SUMMARIES
+    match /daily_summaries/{summaryId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && isSuperAdminOrOwner();
+    }
+  }
+}

@@ -1,0 +1,1137 @@
+// MINE SMART AI - Mine Planning Data Repository & Complete Mock Data Manager
+// Providing complete datasets for: Geological Model, Pit Planning, Scheduling, and AI Scenarios
+
+import {
+  MinePlan,
+  PitDesign,
+  Bench,
+  Ramp,
+  Pushback,
+  MiningSequence,
+  GeologicalSeam,
+  GeologicalBlockModel,
+  GeologicalBorehole,
+  LithologyUnit,
+  LOMPlan,
+  LTPPlan,
+  MTPPlan,
+  STPPlan,
+  WeeklyPlan,
+  DailyPlan,
+  MiningScenario,
+  AIScenarioRecommendation,
+  PlanMilestone,
+  PlanChangeLog,
+  PlanStatus,
+} from "../../types/minePlanningTypes";
+
+export class MinePlanningRepository {
+  // ==========================================
+  // 1. GEOLOGICAL MODEL DATA
+  // ==========================================
+  private static seams: GeologicalSeam[] = [
+    {
+      id: "seam-s30",
+      seamId: "seam-30",
+      name: "Seam 30 Main High-Calorie",
+      code: "S30",
+      strike: "N 15° E",
+      dipAngleDeg: 12,
+      dipDirection: "SE (Tenggara)",
+      averageThicknessM: 6.8,
+      trueThicknessM: 6.65,
+      apparentThicknessM: 6.95,
+      partingThicknessM: 0.25,
+      roofElevationRL: 22.0,
+      floorElevationRL: 15.2,
+      interburdenThicknessM: 18.5,
+      inSituDensity: 1.32,
+      coalRecoveryPercent: 96.5,
+      geologicalLossPercent: 3.5,
+      quality: {
+        garKcal: 4210,
+        narKcal: 3950,
+        totalMoisturePercent: 34.2,
+        inherentMoisturePercent: 14.5,
+        ashContentPercent: 5.4,
+        volatileMatterPercent: 39.8,
+        fixedCarbonPercent: 40.3,
+        totalSulfurPercent: 0.48,
+        hgi: 52,
+        aftFluidDegC: 1280,
+      },
+      totalReserveMt: 14.85,
+      confidenceCategory: "MEASURED",
+      createdAt: "2026-01-10T08:00:00Z",
+      updatedAt: "2026-08-12T10:00:00Z",
+    },
+    {
+      id: "seam-s28",
+      seamId: "seam-28",
+      name: "Seam 28 Interburden Zone",
+      code: "S28",
+      strike: "N 12° E",
+      dipAngleDeg: 11,
+      dipDirection: "SE (Tenggara)",
+      averageThicknessM: 4.2,
+      trueThicknessM: 4.12,
+      apparentThicknessM: 4.28,
+      partingThicknessM: 0.15,
+      roofElevationRL: -3.3,
+      floorElevationRL: -7.5,
+      interburdenThicknessM: 14.2,
+      inSituDensity: 1.34,
+      coalRecoveryPercent: 95.0,
+      geologicalLossPercent: 5.0,
+      quality: {
+        garKcal: 4050,
+        narKcal: 3810,
+        totalMoisturePercent: 36.0,
+        inherentMoisturePercent: 15.2,
+        ashContentPercent: 6.2,
+        volatileMatterPercent: 38.5,
+        fixedCarbonPercent: 40.1,
+        totalSulfurPercent: 0.55,
+        hgi: 50,
+        aftFluidDegC: 1250,
+      },
+      totalReserveMt: 9.42,
+      confidenceCategory: "MEASURED",
+      createdAt: "2026-01-10T08:00:00Z",
+      updatedAt: "2026-08-12T10:00:00Z",
+    },
+    {
+      id: "seam-s24",
+      seamId: "seam-24",
+      name: "Seam 24 Deep Basin Seam",
+      code: "S24",
+      strike: "N 18° E",
+      dipAngleDeg: 14,
+      dipDirection: "SE (Tenggara)",
+      averageThicknessM: 5.5,
+      trueThicknessM: 5.33,
+      apparentThicknessM: 5.67,
+      partingThicknessM: 0.3,
+      roofElevationRL: -21.7,
+      floorElevationRL: -27.2,
+      interburdenThicknessM: 22.0,
+      inSituDensity: 1.31,
+      coalRecoveryPercent: 94.2,
+      geologicalLossPercent: 5.8,
+      quality: {
+        garKcal: 4350,
+        narKcal: 4080,
+        totalMoisturePercent: 31.8,
+        inherentMoisturePercent: 13.8,
+        ashContentPercent: 4.9,
+        volatileMatterPercent: 41.2,
+        fixedCarbonPercent: 40.1,
+        totalSulfurPercent: 0.42,
+        hgi: 54,
+        aftFluidDegC: 1310,
+      },
+      totalReserveMt: 11.2,
+      confidenceCategory: "INDICATED",
+      createdAt: "2026-01-10T08:00:00Z",
+      updatedAt: "2026-08-12T10:00:00Z",
+    },
+    {
+      id: "seam-s18",
+      seamId: "seam-18",
+      name: "Seam 18 Basal Expansion",
+      code: "S18",
+      strike: "N 14° E",
+      dipAngleDeg: 10,
+      dipDirection: "SE (Tenggara)",
+      averageThicknessM: 3.1,
+      trueThicknessM: 3.05,
+      apparentThicknessM: 3.15,
+      partingThicknessM: 0.1,
+      roofElevationRL: -49.2,
+      floorElevationRL: -52.3,
+      interburdenThicknessM: 25.0,
+      inSituDensity: 1.36,
+      coalRecoveryPercent: 92.5,
+      geologicalLossPercent: 7.5,
+      quality: {
+        garKcal: 3890,
+        narKcal: 3650,
+        totalMoisturePercent: 37.5,
+        inherentMoisturePercent: 16.0,
+        ashContentPercent: 7.5,
+        volatileMatterPercent: 36.8,
+        fixedCarbonPercent: 39.7,
+        totalSulfurPercent: 0.68,
+        hgi: 48,
+        aftFluidDegC: 1220,
+      },
+      totalReserveMt: 6.8,
+      confidenceCategory: "INFERRED",
+      createdAt: "2026-01-10T08:00:00Z",
+      updatedAt: "2026-08-12T10:00:00Z",
+    },
+  ];
+
+  private static lithologyUnits: LithologyUnit[] = [
+    {
+      code: "LITH-SS",
+      name: "Sandstone (Batu Pasir Kuarsa)",
+      category: "OVERBURDEN",
+      density: 2.35,
+      ucsMpa: 28.5,
+      diggabilityIndex: "HARD_BLASTING_REQUIRED",
+      colorHex: "#FBBF24",
+      description: "Batuan penutup dominan berlapis tebal dengan kekuatan tekan tinggi, membutuhkan pola peledakan teratur.",
+    },
+    {
+      code: "LITH-MS",
+      name: "Mudstone / Claystone (Batu Lempung)",
+      category: "INTERBURDEN",
+      density: 2.15,
+      ucsMpa: 12.0,
+      diggabilityIndex: "MEDIUM_RIPPING",
+      colorHex: "#94A3B8",
+      description: "Batuan sedimen berbutir halus di antara seam, mudah digali dengan ripping bulldozer atau free-dig excavator.",
+    },
+    {
+      code: "LITH-SLT",
+      name: "Siltstone (Batu Lanau)",
+      category: "INTERBURDEN",
+      density: 2.25,
+      ucsMpa: 18.0,
+      diggabilityIndex: "MEDIUM_RIPPING",
+      colorHex: "#CBD5E1",
+      description: "Batuan sedimen transisi antara batupasir dan batulempung.",
+    },
+    {
+      code: "LITH-COAL",
+      name: "Sub-Bituminous Coal (Batubara)",
+      category: "COAL",
+      density: 1.32,
+      ucsMpa: 8.5,
+      diggabilityIndex: "EASY_FREE_DIG",
+      colorHex: "#1E293B",
+      description: "Batubara sub-bituminus hitam kecoklatan kualitas prima GAR 4200 kalori, clean coal tanpa pengotor masif.",
+    },
+    {
+      code: "LITH-CSH",
+      name: "Carbonaceous Shale (Serpih Karbonan)",
+      category: "INTERBURDEN",
+      density: 1.85,
+      ucsMpa: 9.5,
+      diggabilityIndex: "EASY_FREE_DIG",
+      colorHex: "#475569",
+      description: "Lapisan tipis pengotor parting atau roof batubara dengan kandungan materi organik tinggi.",
+    },
+    {
+      code: "LITH-SOIL",
+      name: "Top Soil & Alluvium (Tanah Pucuk)",
+      category: "SURFICIAL",
+      density: 1.65,
+      ucsMpa: 1.5,
+      diggabilityIndex: "EASY_FREE_DIG",
+      colorHex: "#854D0E",
+      description: "Tanah pucuk lapisan atas kaya hara yang wajib dipisahkan untuk keperluan reklamasi dan revegetasi.",
+    },
+  ];
+
+  private static boreholes: GeologicalBorehole[] = [
+    {
+      id: "bh-01",
+      boreholeId: "BH-101",
+      code: "BH-101",
+      collarEasting: 515790.0,
+      collarNorthing: 9945940.0,
+      collarElevationRL: 48.2,
+      totalDepthM: 85.0,
+      drilledDate: "2026-02-14",
+      drillingMethod: "HQ_WIRELINE_CORE",
+      overallCoreRecoveryPercent: 98.2,
+      seamsIntercepted: ["S30", "S28"],
+      status: "VALIDATED",
+      intervals: [
+        { fromDepthM: 0, toDepthM: 3.5, thicknessM: 3.5, lithologyCode: "LITH-SOIL", lithologyName: "Top Soil", colorHex: "#854D0E", coreRecoveryPercent: 92, description: "Tanah humus coklat tua" },
+        { fromDepthM: 3.5, toDepthM: 26.2, thicknessM: 22.7, lithologyCode: "LITH-SS", lithologyName: "Sandstone OB", colorHex: "#FBBF24", coreRecoveryPercent: 99, description: "Batupasir masif butir sedang abu kekuningan" },
+        { fromDepthM: 26.2, toDepthM: 33.0, thicknessM: 6.8, lithologyCode: "LITH-COAL", lithologyName: "Seam 30 Coal", colorHex: "#1E293B", seamCode: "S30", coreRecoveryPercent: 100, garKcal: 4210, description: "Batubara hitam mengkilap kompak" },
+        { fromDepthM: 33.0, toDepthM: 51.5, thicknessM: 18.5, lithologyCode: "LITH-MS", lithologyName: "Mudstone Interburden", colorHex: "#94A3B8", coreRecoveryPercent: 98, description: "Batulempung abu-abu homogen" },
+        { fromDepthM: 51.5, toDepthM: 55.7, thicknessM: 4.2, lithologyCode: "LITH-COAL", lithologyName: "Seam 28 Coal", colorHex: "#1E293B", seamCode: "S28", coreRecoveryPercent: 99, garKcal: 4050, description: "Batubara banded dull-bright" },
+        { fromDepthM: 55.7, toDepthM: 85.0, thicknessM: 29.3, lithologyCode: "LITH-SLT", lithologyName: "Siltstone Basement", colorHex: "#CBD5E1", coreRecoveryPercent: 97, description: "Batulanau keras" },
+      ],
+      createdAt: "2026-02-15T08:00:00Z",
+      updatedAt: "2026-02-16T10:00:00Z",
+    },
+    {
+      id: "bh-02",
+      boreholeId: "BH-102",
+      code: "BH-102",
+      collarEasting: 517170.0,
+      collarNorthing: 9947340.0,
+      collarElevationRL: 72.0,
+      totalDepthM: 110.0,
+      drilledDate: "2026-03-02",
+      drillingMethod: "HQ_WIRELINE_CORE",
+      overallCoreRecoveryPercent: 97.5,
+      seamsIntercepted: ["S28", "S24"],
+      status: "VALIDATED",
+      intervals: [
+        { fromDepthM: 0, toDepthM: 4.0, thicknessM: 4.0, lithologyCode: "LITH-SOIL", lithologyName: "Top Soil", colorHex: "#854D0E", coreRecoveryPercent: 90, description: "Alluvium coklat" },
+        { fromDepthM: 4.0, toDepthM: 48.5, thicknessM: 44.5, lithologyCode: "LITH-SS", lithologyName: "Sandstone Hard", colorHex: "#FBBF24", coreRecoveryPercent: 98, description: "Batupasir keras silikaan" },
+        { fromDepthM: 48.5, toDepthM: 52.6, thicknessM: 4.1, lithologyCode: "LITH-COAL", lithologyName: "Seam 28 Coal", colorHex: "#1E293B", seamCode: "S28", coreRecoveryPercent: 100, garKcal: 4080, description: "Batubara sub-bituminus" },
+        { fromDepthM: 52.6, toDepthM: 74.6, thicknessM: 22.0, lithologyCode: "LITH-MS", lithologyName: "Mudstone Interburden", colorHex: "#94A3B8", coreRecoveryPercent: 96, description: "Lempung lunak" },
+        { fromDepthM: 74.6, toDepthM: 80.1, thicknessM: 5.5, lithologyCode: "LITH-COAL", lithologyName: "Seam 24 Coal", colorHex: "#1E293B", seamCode: "S24", coreRecoveryPercent: 99, garKcal: 4350, description: "Batubara kalori tinggi GAR 4350" },
+        { fromDepthM: 80.1, toDepthM: 110.0, thicknessM: 29.9, lithologyCode: "LITH-SS", lithologyName: "Sandstone Deep", colorHex: "#FBBF24", coreRecoveryPercent: 98, description: "Batupasir pejal" },
+      ],
+      createdAt: "2026-03-03T08:00:00Z",
+      updatedAt: "2026-03-04T10:00:00Z",
+    },
+    {
+      id: "bh-03",
+      boreholeId: "BH-103",
+      code: "BH-103",
+      collarEasting: 516390.0,
+      collarNorthing: 9946490.0,
+      collarElevationRL: 58.5,
+      totalDepthM: 95.0,
+      drilledDate: "2026-04-10",
+      drillingMethod: "GEOTECH_CORE",
+      overallCoreRecoveryPercent: 96.8,
+      seamsIntercepted: ["S30"],
+      status: "VALIDATED",
+      intervals: [
+        { fromDepthM: 0, toDepthM: 2.0, thicknessM: 2.0, lithologyCode: "LITH-SOIL", lithologyName: "Top Soil", colorHex: "#854D0E", coreRecoveryPercent: 88, description: "Tanah laterit" },
+        { fromDepthM: 2.0, toDepthM: 36.5, thicknessM: 34.5, lithologyCode: "LITH-SS", lithologyName: "Sandstone Highwall", colorHex: "#FBBF24", coreRecoveryPercent: 98, description: "Batupasir teruji geoteknik RQD 78%" },
+        { fromDepthM: 36.5, toDepthM: 43.5, thicknessM: 7.0, lithologyCode: "LITH-COAL", lithologyName: "Seam 30 Coal", colorHex: "#1E293B", seamCode: "S30", coreRecoveryPercent: 99, garKcal: 4230, description: "Batubara padat" },
+        { fromDepthM: 43.5, toDepthM: 95.0, thicknessM: 51.5, lithologyCode: "LITH-MS", lithologyName: "Floor Mudstone", colorHex: "#94A3B8", coreRecoveryPercent: 96, description: "Lempung dasar" },
+      ],
+      createdAt: "2026-04-11T08:00:00Z",
+      updatedAt: "2026-04-12T10:00:00Z",
+    },
+  ];
+
+  private static blockModels: GeologicalBlockModel[] = [
+    { blockId: "BLK-01-01", coordX: 515800, coordY: 9945900, coordZ: 20, sizeX: 25, sizeY: 25, sizeZ: 10, materialType: "COAL", seamCode: "S30", densityTonnePerM3: 1.32, tonnageMt: 0.00825, volumeM3: 6250, garKcal: 4210, ashPercent: 5.4, sulfurPercent: 0.48, confidence: "MEASURED", benchCode: "RL +20m" },
+    { blockId: "BLK-01-02", coordX: 515825, coordY: 9945900, coordZ: 20, sizeX: 25, sizeY: 25, sizeZ: 10, materialType: "COAL", seamCode: "S30", densityTonnePerM3: 1.32, tonnageMt: 0.00825, volumeM3: 6250, garKcal: 4220, ashPercent: 5.2, sulfurPercent: 0.45, confidence: "MEASURED", benchCode: "RL +20m" },
+    { blockId: "BLK-01-03", coordX: 515800, coordY: 9945925, coordZ: 30, sizeX: 25, sizeY: 25, sizeZ: 10, materialType: "OVERBURDEN_SANDSTONE", densityTonnePerM3: 2.35, tonnageMt: 0.01468, volumeM3: 6250, confidence: "MEASURED", benchCode: "RL +30m" },
+    { blockId: "BLK-01-04", coordX: 515825, coordY: 9945925, coordZ: 30, sizeX: 25, sizeY: 25, sizeZ: 10, materialType: "OVERBURDEN_SANDSTONE", densityTonnePerM3: 2.35, tonnageMt: 0.01468, volumeM3: 6250, confidence: "MEASURED", benchCode: "RL +30m" },
+    { blockId: "BLK-01-05", coordX: 515800, coordY: 9945900, coordZ: 40, sizeX: 25, sizeY: 25, sizeZ: 10, materialType: "OVERBURDEN_SANDSTONE", densityTonnePerM3: 2.35, tonnageMt: 0.01468, volumeM3: 6250, confidence: "MEASURED", benchCode: "RL +40m" },
+    { blockId: "BLK-01-06", coordX: 515800, coordY: 9945900, coordZ: 10, sizeX: 25, sizeY: 25, sizeZ: 10, materialType: "INTERBURDEN_SHALE", densityTonnePerM3: 2.15, tonnageMt: 0.01343, volumeM3: 6250, confidence: "MEASURED", benchCode: "RL +10m" },
+    { blockId: "BLK-01-07", coordX: 515825, coordY: 9945900, coordZ: 0, sizeX: 25, sizeY: 25, sizeZ: 10, materialType: "COAL", seamCode: "S28", densityTonnePerM3: 1.34, tonnageMt: 0.00837, volumeM3: 6250, garKcal: 4050, ashPercent: 6.2, sulfurPercent: 0.55, confidence: "MEASURED", benchCode: "RL 0m" },
+  ];
+
+  // ==========================================
+  // 2. PIT PLANNING DATA
+  // ==========================================
+  private static pitDesigns: PitDesign[] = [
+    {
+      id: "pd-01",
+      companyId: "comp-01",
+      siteId: "site-01",
+      pitId: "pit-01",
+      name: "Pit 1 South - Ultimate Shell Design 2026",
+      code: "PIT-01-S",
+      version: "v3.2 Final",
+      elevationMin: -25,
+      elevationMax: 110,
+      depthMeters: 135,
+      areaHectares: 142.5,
+      totalVolumeM3: 18500000,
+      coalVolumeM3: 3550000,
+      wasteVolumeM3: 14950000,
+      stripRatio: 4.21,
+      designStatus: "ACTIVE",
+      overallSlopeAngleDeg: 38.5,
+      batterAngleDeg: 68.0,
+      bermWidthMeters: 6.0,
+      benchHeightMeters: 10.0,
+      rampWidthMeters: 28.0,
+      rampGradePercent: 8.0,
+      factorOfSafetyFK: 1.42,
+      geometry: {
+        boundaryCoordinates: [
+          { lat: -0.491, lng: 117.135 },
+          { lat: -0.489, lng: 117.147 },
+          { lat: -0.498, lng: 117.149 },
+          { lat: -0.5, lng: 117.138 },
+        ],
+        centerCoordinate: { lat: -0.4945, lng: 117.142 },
+      },
+      createdAt: "2026-01-10T08:00:00Z",
+      updatedAt: "2026-08-10T14:00:00Z",
+    },
+    {
+      id: "pd-02",
+      companyId: "comp-01",
+      siteId: "site-01",
+      pitId: "pit-02",
+      name: "Pit 2 North - Expansion Design",
+      code: "PIT-02-N",
+      version: "v2.1",
+      elevationMin: 15,
+      elevationMax: 130,
+      depthMeters: 115,
+      areaHectares: 98.2,
+      totalVolumeM3: 12400000,
+      coalVolumeM3: 2100000,
+      wasteVolumeM3: 10300000,
+      stripRatio: 4.9,
+      designStatus: "APPROVED",
+      overallSlopeAngleDeg: 40.0,
+      batterAngleDeg: 70.0,
+      bermWidthMeters: 5.5,
+      benchHeightMeters: 10.0,
+      rampWidthMeters: 30.0,
+      rampGradePercent: 8.5,
+      factorOfSafetyFK: 1.38,
+      geometry: {
+        boundaryCoordinates: [
+          { lat: -0.474, lng: 117.148 },
+          { lat: -0.472, lng: 117.161 },
+          { lat: -0.482, lng: 117.164 },
+          { lat: -0.484, lng: 117.151 },
+        ],
+        centerCoordinate: { lat: -0.478, lng: 117.155 },
+      },
+      createdAt: "2026-02-01T08:00:00Z",
+      updatedAt: "2026-08-11T10:00:00Z",
+    },
+    {
+      id: "pd-03",
+      companyId: "comp-01",
+      siteId: "site-01",
+      pitId: "pit-03",
+      name: "Pit 3 Central - Deep Transition",
+      code: "PIT-03-C",
+      version: "v1.4",
+      elevationMin: -10,
+      elevationMax: 95,
+      depthMeters: 105,
+      areaHectares: 64.0,
+      totalVolumeM3: 7800000,
+      coalVolumeM3: 1850000,
+      wasteVolumeM3: 5950000,
+      stripRatio: 3.22,
+      designStatus: "ACTIVE",
+      overallSlopeAngleDeg: 37.5,
+      batterAngleDeg: 65.0,
+      bermWidthMeters: 6.5,
+      benchHeightMeters: 10.0,
+      rampWidthMeters: 28.0,
+      rampGradePercent: 8.0,
+      factorOfSafetyFK: 1.45,
+      geometry: {
+        boundaryCoordinates: [
+          { lat: -0.482, lng: 117.134 },
+          { lat: -0.481, lng: 117.143 },
+          { lat: -0.488, lng: 117.145 },
+          { lat: -0.489, lng: 117.136 },
+        ],
+        centerCoordinate: { lat: -0.485, lng: 117.139 },
+      },
+      createdAt: "2026-03-15T08:00:00Z",
+      updatedAt: "2026-08-10T10:00:00Z",
+    },
+  ];
+
+  private static benches: Bench[] = [
+    {
+      id: "bn-01",
+      benchId: "BN-RL100",
+      pitId: "pit-01",
+      benchCode: "RL +100m",
+      elevation: 100,
+      crestElevation: 100,
+      toeElevation: 90,
+      heightMeters: 10,
+      widthMeters: 40,
+      flitchHeightMeters: 2.5,
+      slopeAngleDeg: 68,
+      bermWidthMeters: 6,
+      catchBermCapacityM3: 450,
+      materialType: "OVERBURDEN",
+      status: "COMPLETED",
+      wasteVolumeMbc: 1.25,
+      createdAt: "2026-01-10T08:00:00Z",
+      updatedAt: "2026-08-10T10:00:00Z",
+    },
+    {
+      id: "bn-02",
+      benchId: "BN-RL70",
+      pitId: "pit-01",
+      benchCode: "RL +70m",
+      elevation: 70,
+      crestElevation: 70,
+      toeElevation: 60,
+      heightMeters: 10,
+      widthMeters: 38,
+      flitchHeightMeters: 2.5,
+      slopeAngleDeg: 68,
+      bermWidthMeters: 6,
+      catchBermCapacityM3: 420,
+      materialType: "OVERBURDEN",
+      status: "ACTIVE_EXCAVATION",
+      wasteVolumeMbc: 0.85,
+      createdAt: "2026-01-10T08:00:00Z",
+      updatedAt: "2026-08-10T10:00:00Z",
+    },
+    {
+      id: "bn-03",
+      benchId: "BN-RL30",
+      pitId: "pit-01",
+      benchCode: "RL +30m",
+      elevation: 30,
+      crestElevation: 30,
+      toeElevation: 20,
+      heightMeters: 10,
+      widthMeters: 45,
+      flitchHeightMeters: 2.5,
+      slopeAngleDeg: 65,
+      bermWidthMeters: 7,
+      catchBermCapacityM3: 500,
+      materialType: "COAL_SEAM",
+      status: "ACTIVE_EXCAVATION",
+      coalReserveMt: 0.28,
+      wasteVolumeMbc: 0.42,
+      createdAt: "2026-01-10T08:00:00Z",
+      updatedAt: "2026-08-10T10:00:00Z",
+    },
+    {
+      id: "bn-04",
+      benchId: "BN-RL00",
+      pitId: "pit-01",
+      benchCode: "RL 0m",
+      elevation: 0,
+      crestElevation: 0,
+      toeElevation: -10,
+      heightMeters: 10,
+      widthMeters: 35,
+      flitchHeightMeters: 2.5,
+      slopeAngleDeg: 65,
+      bermWidthMeters: 6,
+      catchBermCapacityM3: 380,
+      materialType: "COAL_SEAM",
+      status: "PLANNED",
+      coalReserveMt: 0.35,
+      wasteVolumeMbc: 0.65,
+      createdAt: "2026-01-10T08:00:00Z",
+      updatedAt: "2026-08-10T10:00:00Z",
+    },
+  ];
+
+  private static ramps: Ramp[] = [
+    {
+      id: "rm-01",
+      rampId: "RMP-MAIN-01",
+      name: "Main Access Ramp South Pit 1",
+      pitId: "pit-01",
+      lengthMeters: 1450,
+      widthMeters: 28,
+      gradePercent: 8.0,
+      elevationStart: 95,
+      elevationEnd: -15,
+      direction: "INCLINE_NORTH",
+      turningRadiusMeters: 32,
+      safetyBermHeightMeters: 2.0,
+      lanes: "DUAL_LANE",
+      status: "OPERATIONAL",
+      createdAt: "2026-01-10T08:00:00Z",
+      updatedAt: "2026-08-10T10:00:00Z",
+    },
+    {
+      id: "rm-02",
+      rampId: "RMP-DISP-02",
+      name: "North Disposal Haul Ramp",
+      pitId: "pit-01",
+      lengthMeters: 1820,
+      widthMeters: 32,
+      gradePercent: 7.5,
+      elevationStart: 45,
+      elevationEnd: 110,
+      direction: "INCLINE_NORTH",
+      turningRadiusMeters: 36,
+      safetyBermHeightMeters: 2.2,
+      lanes: "DUAL_LANE",
+      status: "OPERATIONAL",
+      createdAt: "2026-01-10T08:00:00Z",
+      updatedAt: "2026-08-10T10:00:00Z",
+    },
+  ];
+
+  private static pushbacks: Pushback[] = [
+    {
+      id: "pb-01",
+      pushbackId: "PB-01",
+      code: "PB01",
+      name: "Pushback 1 (PB01) - Initial Boxcut & Seam 30 Exposure",
+      pitId: "pit-01",
+      sequenceOrder: 1,
+      coalReserveMt: 2.45,
+      wasteVolumeMbc: 9.8,
+      totalMovementMbc: 12.25,
+      stripRatio: 4.0,
+      startPeriod: "2026-Q1",
+      endPeriod: "2026-Q4",
+      targetBenchRange: "RL +100m s/d RL +20m",
+      status: "CURRENT_MINING",
+      createdAt: "2026-01-05T08:00:00Z",
+      updatedAt: "2026-08-10T10:00:00Z",
+    },
+    {
+      id: "pb-02",
+      pushbackId: "PB-02",
+      code: "PB02",
+      name: "Pushback 2 (PB02) - West Wall Expansion Seam 28",
+      pitId: "pit-01",
+      sequenceOrder: 2,
+      coalReserveMt: 3.8,
+      wasteVolumeMbc: 16.34,
+      totalMovementMbc: 20.14,
+      stripRatio: 4.3,
+      startPeriod: "2027-Q1",
+      endPeriod: "2027-Q4",
+      targetBenchRange: "RL +110m s/d RL 0m",
+      status: "PLANNED",
+      createdAt: "2026-01-05T08:00:00Z",
+      updatedAt: "2026-08-10T10:00:00Z",
+    },
+    {
+      id: "pb-03",
+      pushbackId: "PB-03",
+      code: "PB03",
+      name: "Pushback 3 (PB03) - Deep Basin Seam 24 Ultimate Cut",
+      pitId: "pit-01",
+      sequenceOrder: 3,
+      coalReserveMt: 6.25,
+      wasteVolumeMbc: 26.87,
+      totalMovementMbc: 33.12,
+      stripRatio: 4.3,
+      startPeriod: "2028-Q1",
+      endPeriod: "2029-Q4",
+      targetBenchRange: "RL +80m s/d RL -25m",
+      status: "PLANNED",
+      createdAt: "2026-01-05T08:00:00Z",
+      updatedAt: "2026-08-10T10:00:00Z",
+    },
+  ];
+
+  private static sequences: MiningSequence[] = [
+    {
+      id: "seq-01",
+      sequenceId: "SEQ-2026-W32-01",
+      pitId: "pit-01",
+      pushbackId: "PB-01",
+      benchCode: "RL +30m",
+      blockId: "BLK-01A",
+      materialType: "COAL_SEAM",
+      volumeMbcOrMt: 0.045,
+      period: "Week 32 (Aug 2026)",
+      priorityOrder: 1,
+      assignedFleet: "EX-02 (PC2000) + 4x DT HD785",
+      haulDestination: "Crusher Plant 01",
+      predecessorSequenceIds: [],
+      status: "IN_PROGRESS",
+      createdAt: "2026-08-01T08:00:00Z",
+      updatedAt: "2026-08-12T10:00:00Z",
+    },
+    {
+      id: "seq-02",
+      sequenceId: "SEQ-2026-W32-02",
+      pitId: "pit-01",
+      pushbackId: "PB-01",
+      benchCode: "RL +70m",
+      blockId: "BLK-02B",
+      materialType: "OVERBURDEN",
+      volumeMbcOrMt: 0.185,
+      period: "Week 32 (Aug 2026)",
+      priorityOrder: 2,
+      assignedFleet: "EX-01 (CAT 6020B) + 6x DT CAT 777D",
+      haulDestination: "North Waste Dump",
+      predecessorSequenceIds: [],
+      status: "IN_PROGRESS",
+      createdAt: "2026-08-01T08:00:00Z",
+      updatedAt: "2026-08-12T10:00:00Z",
+    },
+    {
+      id: "seq-03",
+      sequenceId: "SEQ-2026-W32-03",
+      pitId: "pit-01",
+      pushbackId: "PB-01",
+      benchCode: "RL +20m",
+      blockId: "BLK-01B",
+      materialType: "COAL_SEAM",
+      volumeMbcOrMt: 0.043,
+      period: "Week 33 (Aug 2026)",
+      priorityOrder: 3,
+      assignedFleet: "EX-02 (PC2000)",
+      haulDestination: "ROM Stockpile A",
+      predecessorSequenceIds: ["SEQ-2026-W32-01"],
+      status: "PENDING",
+      createdAt: "2026-08-01T08:00:00Z",
+      updatedAt: "2026-08-12T10:00:00Z",
+    },
+  ];
+
+  // ==========================================
+  // 3. SCHEDULING MASTER DATA (LOM, LTP, MTP, STP, Weekly, Daily)
+  // ==========================================
+  private static plans: MinePlan[] = [
+    {
+      id: "mp-01",
+      planId: "LTP-2026-V1",
+      planVersion: "LTP 2026 v1.0",
+      planType: "LTP",
+      title: "Rencana Jangka Panjang LTP 2026-2035 Pit Sangatta",
+      companyId: "comp-01",
+      siteId: "site-01",
+      pitId: "pit-01",
+      pitName: "Pit 1 South",
+      periodLabel: "2026 - 2035 (10 Tahun)",
+      coalTargetMt: 12.5,
+      wasteTargetMbc: 52.5,
+      totalMovementMbc: 62.1,
+      targetStripRatio: 4.2,
+      status: "Active",
+      approvedBy: "Budi Santoso (Site Manager)",
+      approvedAt: "2026-01-10T08:00:00Z",
+      createdAt: "2026-01-05T08:00:00Z",
+      updatedAt: "2026-01-10T08:00:00Z",
+    },
+    {
+      id: "mp-02",
+      planId: "MTP-2026-Q3",
+      planVersion: "MTP 2026 Q3 v1.1",
+      planType: "MTP",
+      title: "Rencana Jangka Menengah MTP Triwulan III 2026",
+      companyId: "comp-01",
+      siteId: "site-01",
+      pitId: "pit-01",
+      pitName: "Pit 1 South",
+      periodLabel: "Juli - September 2026",
+      coalTargetMt: 1.15,
+      wasteTargetMbc: 4.83,
+      totalMovementMbc: 5.71,
+      targetStripRatio: 4.2,
+      status: "Active",
+      approvedBy: "Agus Pratama (Chief Planner)",
+      approvedAt: "2026-06-25T10:00:00Z",
+      createdAt: "2026-06-20T08:00:00Z",
+      updatedAt: "2026-06-25T10:00:00Z",
+    },
+    {
+      id: "mp-03",
+      planId: "STP-2026-W32",
+      planVersion: "STP W32 v2.0",
+      planType: "WEEKLY",
+      title: "Rencana Mingguan Week 32 Agustus 2026",
+      companyId: "comp-01",
+      siteId: "site-01",
+      pitId: "pit-01",
+      pitName: "Pit 1 South",
+      periodLabel: "10 - 16 Agustus 2026",
+      coalTargetMt: 0.088,
+      wasteTargetMbc: 0.368,
+      totalMovementMbc: 0.435,
+      targetStripRatio: 4.18,
+      status: "Active",
+      approvedBy: "Rian Hidayat (Short Term Planner)",
+      approvedAt: "2026-08-08T14:00:00Z",
+      createdAt: "2026-08-07T08:00:00Z",
+      updatedAt: "2026-08-08T14:00:00Z",
+    },
+  ];
+
+  private static lomPlan: LOMPlan = {
+    id: "lom-01",
+    lomId: "LOM-2026-2035",
+    title: "Life of Mine Master Schedule (10 Tahun Cadangan Sangatta)",
+    initialReserveMt: 42.5,
+    plannedYears: 10,
+    overallStripRatio: 4.24,
+    scenarioName: "Base Case",
+    yearlyData: [
+      { year: 2026, coalTargetMt: 4.2, wasteTargetMbc: 17.64, stripRatio: 4.2, remainingReserveMt: 38.3, averageHaulKm: 3.8, unitMiningCostUSD: 24.5, revenueEstMUSD: 294.0, capexEstMUSD: 14.5 },
+      { year: 2027, coalTargetMt: 4.5, wasteTargetMbc: 19.35, stripRatio: 4.3, remainingReserveMt: 33.8, averageHaulKm: 4.1, unitMiningCostUSD: 25.2, revenueEstMUSD: 315.0, capexEstMUSD: 18.0 },
+      { year: 2028, coalTargetMt: 4.8, wasteTargetMbc: 20.64, stripRatio: 4.3, remainingReserveMt: 29.0, averageHaulKm: 4.4, unitMiningCostUSD: 25.8, revenueEstMUSD: 336.0, capexEstMUSD: 12.0 },
+      { year: 2029, coalTargetMt: 4.8, wasteTargetMbc: 20.16, stripRatio: 4.2, remainingReserveMt: 24.2, averageHaulKm: 4.6, unitMiningCostUSD: 26.1, revenueEstMUSD: 336.0, capexEstMUSD: 9.5 },
+      { year: 2030, coalTargetMt: 4.5, wasteTargetMbc: 18.90, stripRatio: 4.2, remainingReserveMt: 19.7, averageHaulKm: 4.8, unitMiningCostUSD: 26.5, revenueEstMUSD: 315.0, capexEstMUSD: 8.0 },
+      { year: 2031, coalTargetMt: 4.2, wasteTargetMbc: 17.64, stripRatio: 4.2, remainingReserveMt: 15.5, averageHaulKm: 5.0, unitMiningCostUSD: 27.0, revenueEstMUSD: 294.0, capexEstMUSD: 6.0 },
+      { year: 2032, coalTargetMt: 4.0, wasteTargetMbc: 16.80, stripRatio: 4.2, remainingReserveMt: 11.5, averageHaulKm: 5.2, unitMiningCostUSD: 27.5, revenueEstMUSD: 280.0, capexEstMUSD: 5.0 },
+      { year: 2033, coalTargetMt: 3.8, wasteTargetMbc: 16.34, stripRatio: 4.3, remainingReserveMt: 7.7, averageHaulKm: 5.4, unitMiningCostUSD: 28.1, revenueEstMUSD: 266.0, capexEstMUSD: 4.0 },
+      { year: 2034, coalTargetMt: 3.8, wasteTargetMbc: 16.34, stripRatio: 4.3, remainingReserveMt: 3.9, averageHaulKm: 5.6, unitMiningCostUSD: 28.8, revenueEstMUSD: 266.0, capexEstMUSD: 3.0 },
+      { year: 2035, coalTargetMt: 3.9, wasteTargetMbc: 17.16, stripRatio: 4.4, remainingReserveMt: 0.0, averageHaulKm: 5.8, unitMiningCostUSD: 29.5, revenueEstMUSD: 273.0, capexEstMUSD: 2.0 },
+    ],
+    createdAt: "2026-01-05T08:00:00Z",
+    updatedAt: "2026-08-10T10:00:00Z",
+  };
+
+  private static weeklyPlans: WeeklyPlan[] = [
+    {
+      id: "wp-01",
+      weekId: "W32-2026",
+      weekNumber: 32,
+      dateRange: "10 - 16 Agustus 2026",
+      pitId: "pit-01",
+      pushbackId: "PB-01",
+      benchCode: "RL +70m & RL +30m",
+      coalTargetMt: 0.088,
+      wasteTargetMbc: 0.368,
+      movementTargetMbc: 0.435,
+      equipmentTargetUnits: 14,
+      status: "Active",
+      dailyAllocations: [
+        { dayName: "Mon", dateStr: "10 Ags", coalTargetMt: 0.0125, wasteTargetMbc: 0.052, equipmentAssigned: "EX-01 + EX-02", haulRoute: "HR-MAIN-01", status: "COMPLETED" },
+        { dayName: "Tue", dateStr: "11 Ags", coalTargetMt: 0.0130, wasteTargetMbc: 0.053, equipmentAssigned: "EX-01 + EX-02", haulRoute: "HR-MAIN-01", status: "COMPLETED" },
+        { dayName: "Wed", dateStr: "12 Ags", coalTargetMt: 0.0128, wasteTargetMbc: 0.054, equipmentAssigned: "EX-01 + EX-02", haulRoute: "HR-MAIN-01", status: "COMPLETED" },
+        { dayName: "Thu", dateStr: "13 Ags", coalTargetMt: 0.0124, wasteTargetMbc: 0.051, equipmentAssigned: "EX-01 + EX-02", haulRoute: "HR-MAIN-01", status: "IN_PROGRESS" },
+        { dayName: "Fri", dateStr: "14 Ags", coalTargetMt: 0.0122, wasteTargetMbc: 0.052, equipmentAssigned: "EX-01 + EX-02", haulRoute: "HR-MAIN-01", status: "SCHEDULED" },
+        { dayName: "Sat", dateStr: "15 Ags", coalTargetMt: 0.0126, wasteTargetMbc: 0.053, equipmentAssigned: "EX-01 + EX-02", haulRoute: "HR-MAIN-01", status: "SCHEDULED" },
+        { dayName: "Sun", dateStr: "16 Ags", coalTargetMt: 0.0125, wasteTargetMbc: 0.053, equipmentAssigned: "EX-01 + EX-02", haulRoute: "HR-MAIN-01", status: "SCHEDULED" },
+      ],
+      createdAt: "2026-08-08T08:00:00Z",
+      updatedAt: "2026-08-12T10:00:00Z",
+    },
+  ];
+
+  private static dailyPlans: DailyPlan[] = [
+    {
+      id: "dp-01",
+      dailyId: "DP-2026-0815-D",
+      date: "2026-08-15",
+      shift: "SHIFT_1_DAY",
+      pitId: "pit-01",
+      pitName: "Pit 1 South",
+      pushbackId: "PB-01",
+      benchCode: "RL +30m (Coal) & RL +70m (OB)",
+      activityType: "COAL_GETTING",
+      coalTargetMt: 0.0065,
+      wasteTargetMbc: 0.0265,
+      actualCoalMt: 0.0068,
+      actualWasteMbc: 0.0271,
+      assignedEquipment: ["EX-02 (PC2000)", "DT-101", "DT-103", "DT-105", "DZ-02"],
+      haulingRoute: "HR-MAIN-01 to Crusher 01",
+      haulDistanceKm: 3.8,
+      status: "EXECUTING",
+      createdAt: "2026-08-14T20:00:00Z",
+      updatedAt: "2026-08-15T08:00:00Z",
+    },
+    {
+      id: "dp-02",
+      dailyId: "DP-2026-0815-N",
+      date: "2026-08-15",
+      shift: "SHIFT_2_NIGHT",
+      pitId: "pit-01",
+      pitName: "Pit 1 South",
+      pushbackId: "PB-01",
+      benchCode: "RL +70m (OB Stripping)",
+      activityType: "OB_REMOVAL",
+      coalTargetMt: 0.0060,
+      wasteTargetMbc: 0.0265,
+      assignedEquipment: ["EX-01 (CAT 6020B)", "DT-102", "DT-104", "DT-108", "DZ-01", "WT-01"],
+      haulingRoute: "HR-OB-02 to Disposal North",
+      haulDistanceKm: 4.2,
+      status: "SCHEDULED",
+      createdAt: "2026-08-14T20:00:00Z",
+      updatedAt: "2026-08-15T08:00:00Z",
+    },
+  ];
+
+  // ==========================================
+  // 4. AI MINE PLANNING & SCENARIO ENGINE
+  // ==========================================
+  private static scenarios: MiningScenario[] = [
+    {
+      id: "scen-01",
+      scenarioId: "SCEN-A",
+      scenarioCode: "SCENARIO_A",
+      name: "Skenario A: Akselerasi Produksi Agresif (High Volume Push)",
+      subtitle: "Fokus maksimalkan volume ekspor dengan penambahan fleet sewa & stripping dalam",
+      description: "Mempercepat pengupasan overburden di Pit 1 & Pit 2 untuk membuka cadangan Seam 30 dan Seam 28 secara masif dalam 12 bulan.",
+      strategyFocus: "HIGH_VOLUME_AGGRESSIVE",
+      riskRating: "HIGH",
+      aiScore: 78,
+      isRecommendedByAI: false,
+      status: "EVALUATED",
+      metrics: {
+        coalProductionMt: 5.4,
+        obRemovalMbc: 28.08,
+        cleanCoalMt: 5.21,
+        averageGarKcal: 4180,
+        strippingCostPerBcmUSD: 2.35,
+        coalMiningCostPerTonUSD: 5.80,
+        haulingCostPerTonUSD: 4.20,
+        totalOpexUSD: 142800000,
+        revenueEstUSD: 378000000,
+        profitMarginPerTonUSD: 43.55,
+        npvUSDMillion: 186.4,
+        actualStripRatio: 5.2,
+        economicBreakEvenSR: 7.8,
+        averageHaulDistanceKm: 4.85,
+        cycleTimeMinutes: 24.5,
+        fuelBurnRatioLPerBcm: 1.48,
+        totalFuelLitersPerDay: 114500,
+        fleetExcavatorCount: 6,
+        fleetDumpTruckCount: 32,
+        equipmentUtilizationPercent: 88.5,
+        carbonEmissionTonPerMonth: 8950,
+      },
+      pros: [
+        "Mendongkrak pendapatan kotor sebesar +28.5% di tengah harga batubara tinggi ($70/ton).",
+        "Membuka cadangan batubara Seam 28 lebih cepat 4 bulan dari jadwal LOM dasar.",
+        "Maksimalisasi utilisasi crushing plant dan jetty loader.",
+      ],
+      cons: [
+        "Strip Ratio membengkak ke 5.20 : 1 (kebutuhan modal kerja stripping sangat tinggi).",
+        "Jarak hauling meningkat ke 4.85 km menyebabkan konsumsi solar naik +34%.",
+        "Risiko kemacetan antrean di pit bottleneck dan peningkatan laju keausan ban HD785.",
+      ],
+      createdAt: "2026-08-01T08:00:00Z",
+      updatedAt: "2026-08-12T10:00:00Z",
+    },
+    {
+      id: "scen-02",
+      scenarioId: "SCEN-B",
+      scenarioCode: "SCENARIO_B",
+      name: "Skenario B: Optimasi Berimbang & Efisiensi Bahan Bakar (AI Recommended)",
+      subtitle: "Keseimbangan ideal antara target RKAB, Strip Ratio rendah, dan penghematan biaya OPEX",
+      description: "Menyeimbangkan kemajuan penambangan Pit 1 South (Seam 30) dengan rute hauling terpendek ke In-Pit Dump dan ROM pad utama.",
+      strategyFocus: "BALANCED_OPTIMIZATION",
+      riskRating: "LOW",
+      aiScore: 95,
+      isRecommendedByAI: true,
+      status: "RECOMMENDED",
+      metrics: {
+        coalProductionMt: 4.5,
+        obRemovalMbc: 18.90,
+        cleanCoalMt: 4.38,
+        averageGarKcal: 4210,
+        strippingCostPerBcmUSD: 2.10,
+        coalMiningCostPerTonUSD: 5.20,
+        haulingCostPerTonUSD: 3.10,
+        totalOpexUSD: 101250000,
+        revenueEstUSD: 319500000,
+        profitMarginPerTonUSD: 48.50,
+        npvUSDMillion: 198.8,
+        actualStripRatio: 4.2,
+        economicBreakEvenSR: 7.8,
+        averageHaulDistanceKm: 3.40,
+        cycleTimeMinutes: 18.2,
+        fuelBurnRatioLPerBcm: 1.18,
+        totalFuelLitersPerDay: 72800,
+        fleetExcavatorCount: 4,
+        fleetDumpTruckCount: 22,
+        equipmentUtilizationPercent: 92.4,
+        carbonEmissionTonPerMonth: 5820,
+      },
+      pros: [
+        "NPV Tertinggi ($198.8M) dengan profit margin tertinggi ($48.50/ton).",
+        "Strip Ratio stabil di 4.20:1 sesuai persetujuan dokumen RKAB ESDM.",
+        "Jarak hauling terpendek (3.40 km) menghemat 41.700 Liter solar/hari (-36.4% fuel cost).",
+        "Emisi karbon terendah dan indeks keselamatan geoteknik lereng paling aman (FK 1.42).",
+      ],
+      cons: [
+        "Volume batubara lebih rendah 0.9 Mt dibandingkan Skenario A jika terjadi lonjakan harga mendadak.",
+      ],
+      createdAt: "2026-08-01T08:00:00Z",
+      updatedAt: "2026-08-12T10:00:00Z",
+    },
+    {
+      id: "scen-03",
+      scenarioId: "SCEN-C",
+      scenarioCode: "SCENARIO_C",
+      name: "Skenario C: Low Cost Konservatif & Selective Mining",
+      subtitle: "Penambangan batubara kalori tinggi dengan pengupasan minimal dan zero Capex tambahan",
+      description: "Hanya menambang batubara crop line Seam 30 dengan rasio pengupasan rendah (SR 3.4 : 1) untuk pengamanan arus kas di masa defisit.",
+      strategyFocus: "LOW_COST_HIGH_MARGIN",
+      riskRating: "MODERATE",
+      aiScore: 82,
+      isRecommendedByAI: false,
+      status: "EVALUATED",
+      metrics: {
+        coalProductionMt: 3.6,
+        obRemovalMbc: 12.24,
+        cleanCoalMt: 3.52,
+        averageGarKcal: 4260,
+        strippingCostPerBcmUSD: 2.05,
+        coalMiningCostPerTonUSD: 5.10,
+        haulingCostPerTonUSD: 2.90,
+        totalOpexUSD: 74160000,
+        revenueEstUSD: 259200000,
+        profitMarginPerTonUSD: 51.40,
+        npvUSDMillion: 162.5,
+        actualStripRatio: 3.4,
+        economicBreakEvenSR: 7.8,
+        averageHaulDistanceKm: 3.10,
+        cycleTimeMinutes: 16.8,
+        fuelBurnRatioLPerBcm: 1.12,
+        totalFuelLitersPerDay: 48500,
+        fleetExcavatorCount: 3,
+        fleetDumpTruckCount: 16,
+        equipmentUtilizationPercent: 94.0,
+        carbonEmissionTonPerMonth: 4100,
+      },
+      pros: [
+        "Total pengeluaran biaya modal (OPEX) terendah ($74.16M).",
+        "Margin per ton tertinggi ($51.40/ton) karena hanya menggali seam batubara dangkal.",
+        "Beban armada minimal sehingga risiko downtime operasional sangat kecil.",
+      ],
+      cons: [
+        "Meninggalkan overburden tertunda (highwall steepening) yang akan membebani tahun berikutnya.",
+        "Total pendapatan absolut lebih rendah $118.8M dibanding Skenario A.",
+        "Tidak mencapai target kapasitas terpasang crushing plant (idle 30%).",
+      ],
+      createdAt: "2026-08-01T08:00:00Z",
+      updatedAt: "2026-08-12T10:00:00Z",
+    },
+  ];
+
+  private static aiRecommendation: AIScenarioRecommendation = {
+    recommendedScenarioCode: "SCENARIO_B",
+    recommendedScenarioName: "Skenario B: Optimasi Berimbang & Efisiensi Bahan Bakar",
+    confidenceScorePercent: 94.8,
+    executiveSummary: "AI Mine Planning merekomendasikan SCENARIO B sebagai rencana tambang paling optimal untuk dieksekusi. Skenario B memberikan Net Present Value (NPV) tertinggi sebesar $198.8 Juta dengan Strip Ratio 4.20 : 1, sekaligus memangkas konsumsi bahan bakar hingga 36.4% melalui optimalisasi rute hauling terpendek (3.40 km) dan in-pit dump disposal.",
+    financialAdvantage: "Menghasilkan Margin Bersih $48.50/Ton (Total Gross Profit $218.25M), lebih efisien $41.5M dalam modal kerja stripping dibandingkan Skenario A, dan menghasilkan Net Cash Flow $36.3M lebih tinggi dibanding Skenario C.",
+    operationalAdvantage: "Menjaga siklus armada di 18.2 menit per ritase, mencegah bottleneck di simpang jalan hauling utama, dan memastikan kepatuhan 100% terhadap dokumen persetujuan RKAB Ditjen Minerba ESDM.",
+    tradeOffSummary: "Meskipun Skenario A menghasilkan 0.9 Mt lebih banyak batubara, peningkatan Strip Ratio ke 5.20 dan lonjakan biaya hauling jarak jauh (+1.45 km) menekan margin profitabilitas sebesar -$5.05/Ton dan menaikkan risiko lonjakan harga BBM.",
+    actionableRoadmap: [
+      "Fokuskan 2 fleet utama (EX-01 CAT 6020B & EX-02 PC2000) pada Pit 1 South Bench RL +70m s/d RL +30m.",
+      "Aktifkan rute hauling HR-MAIN-01 langsung ke Crusher 01 untuk memangkas jarak tempuh menjadi 3.4 km.",
+      "Terapkan in-pit dumping pada blok pasca tambang Sektor Barat untuk menghemat siklus ritase dozer.",
+      "Sinkronisasikan blending batubara Seam 30 (GAR 4210) dan Seam 28 (GAR 4050) untuk menjaga spesifikasi kontrak pembeli di GAR 4200.",
+    ],
+    sensitivityAnalysis: {
+      fuelPricePlus20PercentImpact: "Jika harga solar industri naik +20%, Skenario B tetap menghasilkan profit margin kuat $44.80/Ton, sedangkan margin Skenario A anjlok ke $37.10/Ton.",
+      coalPriceDrop15PercentImpact: "Jika harga batubara internasional turun -15% ke $59.5/Ton, Skenario B tetap surplus $38.00/Ton dengan titik impas aman.",
+      rainySeasonDisruptionImpact: "Dengan grade jalan 8.0% dan drainase ganda pada Skenario B, waktu tunda hujan (slippery delay) dapat ditekan < 35 jam/bulan.",
+    },
+  };
+
+  private static changeLogs: PlanChangeLog[] = [
+    {
+      id: "log-01",
+      logId: "LOG-01",
+      planId: "LTP-2026-V1",
+      userId: "usr-01",
+      userName: "Agus Pratama",
+      role: "Chief Mine Planner",
+      timestamp: "2026-08-12T14:30:00Z",
+      action: "UPDATE_STATUS",
+      oldValue: "Review",
+      newValue: "Approved",
+      reason: "Persetujuan KTT dan Direksi atas evaluasi Skenario B AI Planner",
+      approvalStatus: "APPROVED",
+      createdAt: "2026-08-12T14:30:00Z",
+      updatedAt: "2026-08-12T14:30:00Z",
+    },
+  ];
+
+  // ==========================================
+  // GETTERS & SETTERS
+  // ==========================================
+  public static getSeams(): GeologicalSeam[] {
+    return this.seams;
+  }
+
+  public static getLithologyUnits(): LithologyUnit[] {
+    return this.lithologyUnits;
+  }
+
+  public static getBoreholes(): GeologicalBorehole[] {
+    return this.boreholes;
+  }
+
+  public static getBlockModels(): GeologicalBlockModel[] {
+    return this.blockModels;
+  }
+
+  public static getPitDesigns(): PitDesign[] {
+    return this.pitDesigns;
+  }
+
+  public static getBenches(): Bench[] {
+    return this.benches;
+  }
+
+  public static getRamps(): Ramp[] {
+    return this.ramps;
+  }
+
+  public static getPushbacks(): Pushback[] {
+    return this.pushbacks;
+  }
+
+  public static getSequences(): MiningSequence[] {
+    return this.sequences;
+  }
+
+  public static getPlans(): MinePlan[] {
+    return this.plans;
+  }
+
+  public static getLOMPlan(): LOMPlan {
+    return this.lomPlan;
+  }
+
+  public static getWeeklyPlans(): WeeklyPlan[] {
+    return this.weeklyPlans;
+  }
+
+  public static getDailyPlans(): DailyPlan[] {
+    return this.dailyPlans;
+  }
+
+  public static getScenarios(): MiningScenario[] {
+    return this.scenarios;
+  }
+
+  public static getAIRecommendation(): AIScenarioRecommendation {
+    return this.aiRecommendation;
+  }
+
+  public static getChangeLogs(): PlanChangeLog[] {
+    return this.changeLogs;
+  }
+
+  public static updatePlanStatus(
+    planId: string,
+    newStatus: PlanStatus,
+    role: string,
+    userName: string
+  ): void {
+    const plan = this.plans.find((p) => p.planId === planId);
+    if (plan) {
+      const old = plan.status;
+      plan.status = newStatus;
+      this.changeLogs.unshift({
+        id: `log-${Date.now()}`,
+        logId: `LOG-${Date.now()}`,
+        planId,
+        userId: "usr-current",
+        userName,
+        role,
+        timestamp: new Date().toISOString(),
+        action: "UPDATE_STATUS",
+        oldValue: old,
+        newValue: newStatus,
+        reason: `Status diubah menjadi ${newStatus} oleh ${userName}`,
+        approvalStatus: "APPROVED",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      });
+    }
+  }
+
+  public static addPlan(plan: MinePlan): void {
+    this.plans.unshift(plan);
+  }
+
+  public static applyRecommendedScenario(scenarioCode: string): void {
+    const scen = this.scenarios.find((s) => s.scenarioCode === scenarioCode);
+    if (scen) {
+      // Synchronize active plan targets
+      this.plans[0].coalTargetMt = scen.metrics.coalProductionMt;
+      this.plans[0].wasteTargetMbc = scen.metrics.obRemovalMbc;
+      this.plans[0].targetStripRatio = scen.metrics.actualStripRatio;
+      this.plans[0].remarks = `Diterapkan berdasarkan rekomendasi AI: ${scen.name}`;
+      this.plans[0].updatedAt = new Date().toISOString();
+    }
+  }
+}
